@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *left;
+    struct node *right;
+};
+
+struct node* createNode(int value) {
+    if (value == -1) return NULL; // No node
+    struct node *newNode = (struct node*)malloc(sizeof(struct node));
+    newNode->data = value;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+
+// Build tree from level order input
+struct node* buildTree(int arr[], int n, int index) {
+    if (index >= n || arr[index] == -1)
+        return NULL;
+
+    struct node* root = createNode(arr[index]);
+    root->left  = buildTree(arr, n, 2 * index + 1);
+    root->right = buildTree(arr, n, 2 * index + 2);
+
+    return root;
+}
+
+void preorder(struct node *root) {
+    if (root == NULL) return;
+    printf("%d ", root->data);
+    preorder(root->left);
+    preorder(root->right);
+}
+
+void inorder(struct node *root) {
+    if (root == NULL) return;
+    inorder(root->left);
+    printf("%d ", root->data);
+    inorder(root->right);
+}
+
+void postorder(struct node *root) {
+    if (root == NULL) return;
+    postorder(root->left);
+    postorder(root->right);
+    printf("%d ", root->data);
+}
+
+int main() {
+    int n, i;
+    printf("Enter number of nodes: ");
+    scanf("%d", &n);
+
+    int arr[n];
+    printf("Enter nodes (-1 for NULL):\n");
+    for (i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    struct node* root = buildTree(arr, n, 0);
+
+    printf("\nPreorder  : ");
+    preorder(root);
+
+    printf("\nInorder   : ");
+    inorder(root);
+
+    printf("\nPostorder : ");
+    postorder(root);
+
+    printf("\n");
+    return 0;
+}
