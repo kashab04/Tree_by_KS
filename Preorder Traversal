@@ -8,7 +8,7 @@ struct Node {
     struct Node* right;
 };
 
-// Create new node
+// Create node
 struct Node* createNode(int value) {
     struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
     newNode->data = value;
@@ -17,23 +17,36 @@ struct Node* createNode(int value) {
     return newNode;
 }
 
-// Preorder traversal
+// Insert (BST)
+struct Node* insert(struct Node* root, int value) {
+    if (root == NULL)
+        return createNode(value);
+
+    if (value < root->data)
+        root->left = insert(root->left, value);
+    else
+        root->right = insert(root->right, value);
+
+    return root;
+}
+
+// Preorder Traversal (Root → Left → Right)
 void preorder(struct Node* root) {
     if (root != NULL) {
-        printf("%d ", root->data);   // Root
-        preorder(root->left);        // Left
-        preorder(root->right);       // Right
+        printf("%d ", root->data);
+        preorder(root->left);
+        preorder(root->right);
     }
 }
 
 int main() {
     struct Node* root = NULL;
 
-    root = createNode(10);
-    root->left = createNode(5);
-    root->right = createNode(20);
-    root->left->left = createNode(3);
-    root->left->right = createNode(7);
+    root = insert(root, 10);
+    insert(root, 5);
+    insert(root, 20);
+    insert(root, 3);
+    insert(root, 7);
 
     printf("Preorder Traversal:\n");
     preorder(root);
