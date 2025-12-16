@@ -17,23 +17,39 @@ struct Node* createNode(int value) {
     return newNode;
 }
 
+// Insert function (BST)
+struct Node* insert(struct Node* root, int value) {
+    if (root == NULL) {
+        return createNode(value);
+    }
+
+    if (value < root->data) {
+        root->left = insert(root->left, value);
+    } else {
+        root->right = insert(root->right, value);
+    }
+
+    return root;
+}
+
 // Inorder traversal
 void inorder(struct Node* root) {
     if (root != NULL) {
-        inorder(root->left);          // Left
-        printf("%d ", root->data);    // Root
-        inorder(root->right);         // Right
+        inorder(root->left);
+        printf("%d ", root->data);
+        inorder(root->right);
     }
 }
 
 int main() {
     struct Node* root = NULL;
 
-    root = createNode(10);
-    root->left = createNode(5);
-    root->right = createNode(20);
-    root->left->left = createNode(3);
-    root->left->right = createNode(7);
+    // Just insert values
+    root = insert(root, 10);
+    insert(root, 5);
+    insert(root, 20);
+    insert(root, 3);
+    insert(root, 7);
 
     printf("Inorder Traversal:\n");
     inorder(root);
